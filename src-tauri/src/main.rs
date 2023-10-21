@@ -1,15 +1,31 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+use tauri::{CustomMenuItem, Menu, MenuEntry, MenuItem, Submenu};
+
+fn setup_menu() -> Menu {
+    let mut menu =
+        Menu::os_default("DashPaper").add_item(CustomMenuItem::new("open", "Open Folder"));
+    menu.items = menu
+        .items
+        .into_iter()
+        .map(|m| match m {
+            MenuEntry::Submenu(s) if s.title == "File" => MenuEntry::Submenu(Submenu::new(
+                s.title,
+                s.inner
+                    .add_item(CustomMenuItem::new("open", "Open Folder...")),
+            )),
+            _ => m,
+        })
+        .collect();
+
+    menu
 }
 
 fn main() {
+    let menu = setup_menu();
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet])
+        .menu(menu)
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
