@@ -1,0 +1,11 @@
+root = true
+
+[*]
+indent_size = 4
+indent_style = space
+
+[{*.ts,*.js,*.tsx,*.jsx}]
+indent_size = 2
+
+[{*.toml,*.yaml}]
+indent_size = 2
