@@ -1,5 +1,5 @@
 import { render } from "preact";
-import App from "./App";
+import HomeScreen from "./HomeScreen.tsx";
 import "./styles.css";
 
 import { MenuHandler } from "./desktop/menu.ts";
@@ -12,4 +12,4 @@ const menu = new MenuHandler(state, repo);
 menu.register();
 state.initializeRepo(repo);
 
-render(<App repo={repo} />, document.getElementById("root")!);
+render(<HomeScreen repo={repo} />, document.getElementById("root")!);

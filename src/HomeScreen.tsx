@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 import { Item } from "birch-outline";
-import "./App.css";
+import "./HomeScreen.css";
 import { TaskPaperRepository } from "./storage/repo";
 
 type AppParameters = {
@@ -30,7 +30,7 @@ function TaskList(params: TaskListParams) {
   </ul>)
 }
 
-function App(params: AppParameters) {
+function HomeScreen(params: AppParameters) {
   let [docs, updateDocs] = useState(null);
   params.repo.on("configured", () => {
     params.repo.loadDocuments().then(updateDocs);
@@ -47,4 +47,4 @@ function App(params: AppParameters) {
   );
 }
 
-export default App;
+export default HomeScreen;
