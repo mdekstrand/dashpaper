@@ -1,4 +1,4 @@
-export type EventListener = () => void;
+export type EventListener = (...args: any[]) => void;
 
 type ListenerMap = {
   [key: string]: EventListener[];
@@ -20,9 +20,9 @@ export class EventEmitter {
     this.#listeners[evt].push(callback);
   }
 
-  emit(evt: string) {
+  emit(evt: string, ...args: any[]) {
     for (let proc of this.#listeners[evt] ?? []) {
-      proc();
+      proc(...args);
     }
   }
 }

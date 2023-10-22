@@ -2,25 +2,33 @@ import { useState } from "preact/hooks";
 import { Item } from "birch-outline";
 import "./FileView.css";
 import { TaskPaperRepository } from "./storage/repo";
-import { TaskLine, TaskList } from "./components/items";
+import { TaskList } from "./components/items";
 
 type HomeParams = {
   path: string,
   repo: TaskPaperRepository,
-  file: string,
+  name: string,
 }
 
-function HomeScreen(params: HomeParams) {
-  let [outline, updateOutline] = useState(null);
-  params.repo.loadDocument(params.name).then(updateOutline);
+function FileView(params: HomeParams) {
+  let repo = params.repo;
+  let name = params.name;
+  let [outline, updateOutline] = useState(repo.getDocument(name));
+  params.repo.on("doc-loaded", (n) => {
+    if (n == name) {
+      updateOutline(repo.getDocument(name));
+    }
+  });
 
   return (
     <div class="container">
       <h1>{params.name}</h1>
+
+      <p><a href="/">Back to Dashboard</a></p>
 
       {outline ? <TaskList items={outline.root.children} /> : <p>Loading outline…</p>}
     </div>
   );
 }
 
-export default HomeScreen;
+export default FileView;

@@ -8,10 +8,10 @@ type HomeParams = {
 }
 
 function HomeScreen(params: HomeParams) {
-  let [docs, updateDocs] = useState(null);
-  params.repo.loadDocuments()?.then(updateDocs);
-  params.repo.on("configured", () => {
-    params.repo.loadDocuments().then(updateDocs);
+  let repo = params.repo;
+  let [docs, updateDocs] = useState(repo.allDocuments());
+  repo.on("doclist-loaded", () => {
+    updateDocs(repo.allDocuments());
   });
 
   return (

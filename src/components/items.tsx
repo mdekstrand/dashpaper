@@ -11,8 +11,8 @@ type TaskListParams = {
 export function TaskLine(params: TaskLineParams) {
   let item = params.item;
   console.log("item: %o", item);
-  let type = item.getAttribute("type");
-  return (<li class={"item " + type}>
+  let type = item.getAttribute("data-type");
+  return (<li class={"item " + type} id={item.id}>
     <div class="self">{item.bodyContentString}</div>
     {item.children ? <TaskList items={item.children}/> : null}
   </li>)
