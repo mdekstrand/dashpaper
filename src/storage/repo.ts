@@ -38,8 +38,16 @@ export class TaskPaperRepository extends EventEmitter {
 
     let outlines = [];
     for (let name of files) {
-      outlines.push({ name, outline: await this.backend.getFile(name) });
+      let content = await this.backend.getFile(name);
+      let outline = Outline.createTaskPaperOutline(content);
+      outlines.push({ name, outline });
     }
     return outlines;
+  }
+
+  async loadDocument(name): Promise<Outline> {
+    let content = await this.backend.getFile(name);
+    let outline = Outline.createTaskPaperOutline(content);
+    return outline;
   }
 }
