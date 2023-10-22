@@ -9,9 +9,9 @@ type StorageBackend = {
   getFile(name: string): Promise<string>;
 };
 
-export type OutlineSet = {
-  $count: number;
-  [name: string]: Outline;
+export type TaskFile = {
+  name: string;
+  outline: Outline;
 };
 
 export class TaskPaperRepository extends EventEmitter {
@@ -27,17 +27,19 @@ export class TaskPaperRepository extends EventEmitter {
     this.emit("configured");
   }
 
-  async loadDocuments(): Promise<OutlineSet | null> {
+  async loadDocuments(): Promise<TaskFile[] | null> {
+    if (!this.backend) {
+      return null;
+    }
     let files = await this.backend?.listFiles();
     if (files == null) {
       return null;
     }
 
-    let obj: OutlineSet = { $count: 0 };
-    for (let f of files) {
-      obj[f] = this.backend?.getFile(f);
-      obj.$count += 1;
+    let outlines = [];
+    for (let name of files) {
+      outlines.push({ name, outline: await this.backend.getFile(name) });
     }
-    return obj;
+    return outlines;
   }
 }

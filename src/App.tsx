@@ -1,11 +1,33 @@
 import { useState } from "preact/hooks";
-import preactLogo from "./assets/preact.svg";
-import { invoke } from "@tauri-apps/api/tauri";
+import { Item } from "birch-outline";
 import "./App.css";
 import { TaskPaperRepository } from "./storage/repo";
 
 type AppParameters = {
   repo: TaskPaperRepository
+}
+
+type TaskLineParams = {
+  item: Item;
+}
+
+type TaskListParams = {
+  items: Item[];
+}
+
+function TaskLine(params: TaskLineParams) {
+  let item = params.item;
+  let type = item.getAttribute("type");
+  return (<li class={"item " + type}>
+    <div class="self">{item.bodyContentString}</div>
+    (item.children ? <TaskList items={item.children}/> : null)
+  </li>)
+}
+
+function TaskList(params: TaskListParams) {
+  return (<ul>
+    {params.items.map((i) => <TaskLine item={i}/>)}
+  </ul>)
 }
 
 function App(params: AppParameters) {
@@ -19,7 +41,7 @@ function App(params: AppParameters) {
       <h1>DashPaper</h1>
 
       <ul>
-        {docs ? Object.keys(docs).map((n) => <li>{n}</li>) : []}
+        {docs ? docs.map((o) => <li>{o.name}</li>) : []}
       </ul>
     </div>
   );
