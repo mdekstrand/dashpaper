@@ -10,6 +10,7 @@ type TaskListParams = {
 
 export function TaskLine(params: TaskLineParams) {
   let item = params.item;
+  console.log("item: %o", item);
   let type = item.getAttribute("type");
   return (<li class={"item " + type}>
     <div class="self">{item.bodyContentString}</div>
