@@ -101,7 +101,7 @@ function Upcoming({ docs }: DocListParams) {
 function HomeScreen(params: HomeParams) {
   let repo = params.repo;
   let [docs, updateDocs] = useState(repo.allDocuments());
-  repo.on("doclist-loaded", () => {
+  repo.hook("doclist-loaded", () => {
     updateDocs(repo.allDocuments());
   });
 
