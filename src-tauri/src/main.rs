@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use tauri::{CustomMenuItem, Menu, MenuEntry, MenuItem, Submenu};
+use tauri::{CustomMenuItem, Menu, MenuEntry, Submenu};
 
 fn setup_menu() -> Menu {
     let mut menu =

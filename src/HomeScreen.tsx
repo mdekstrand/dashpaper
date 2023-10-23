@@ -1,6 +1,5 @@
-import { h, Fragment } from "preact";
+import { h } from "preact";
 import { useState } from "preact/hooks";
-import { Item } from "birch-outline";
 import "./HomeScreen.css";
 import { TaskPaperRepository, TaskFile } from "./storage/repo";
 import { TaskLine } from "./components/items";
