@@ -1,3 +1,4 @@
+import { h, Fragment } from 'preact';
 import { useState } from "preact/hooks";
 import { Item } from "birch-outline";
 import "./FileView.css";
