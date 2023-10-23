@@ -11,10 +11,10 @@ export class TauriStorage {
     this.root = dir;
   }
 
-  async listFiles() {
+  async listFiles(): Promise<string[]> {
     let files = await readDir(this.root);
     let tpfiles = files.filter((f) => f.name?.endsWith(".taskpaper"))
-      .map((f) => f.name);
+      .map((f) => f.name ?? "##UNREACHABLE");
     console.log("found %d taskpaper files", tpfiles.length);
     return tpfiles;
   }

@@ -5,18 +5,23 @@ import "./FileView.css";
 import { TaskPaperRepository } from "./storage/repo";
 import { TaskList } from "./components/items";
 
-type HomeParams = {
+type FileParams = {
   path: string,
   repo: TaskPaperRepository,
-  name: string,
+  name?: string,
 }
 
-function FileView(params: HomeParams) {
+function FileView(params: FileParams) {
   let repo = params.repo;
   let name = params.name;
+  if (!name) {
+    return (
+      <div class="error">Fatal error: no file name specified.</div>
+    );
+  }
   let [outline, updateOutline] = useState(repo.getDocument(name));
   params.repo.on("doc-loaded", (n) => {
-    if (n == name) {
+    if (name && n == name) {
       updateOutline(repo.getDocument(name));
     }
   });

@@ -11,6 +11,7 @@ type DocListParams = {
 
 type HomeParams = {
   repo: TaskPaperRepository;
+  path?: string;
 };
 
 function DocList({ docs }: DocListParams) {

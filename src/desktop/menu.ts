@@ -32,6 +32,9 @@ export class MenuHandler {
     if (dir == null) {
       console.log("open cancelled");
       return;
+    } else if (Array.isArray(dir)) {
+      console.error("received multiple directories, using first");
+      dir = dir[0];
     }
 
     console.log("requested dir %s", dir);
