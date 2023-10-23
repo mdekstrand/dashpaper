@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node serve.js",
-    "build": "node build.js",
+    "build": "node bundle.js",
     "tauri": "tauri"
   },
   "dependencies": {
