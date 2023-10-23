@@ -1,7 +1,7 @@
 import * as esbuild from "esbuild";
 import brode from "@geut/esbuild-plugin-brode";
 
-esbuild.build({
+let result = await esbuild.build({
   bundle: true,
   outdir: "dist",
   entryPoints: ["src/main.tsx"],
@@ -12,3 +12,4 @@ esbuild.build({
     brode(),
   ],
 });
+console.log(result);

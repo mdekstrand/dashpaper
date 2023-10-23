@@ -33,7 +33,7 @@ export class TaskPaperRepository extends EventEmitter {
     return this.documents.get(name);
   }
 
-  allDocuments() {
+  allDocuments(): TaskFile[] {
     let docs = [];
     for (let [name, outline] of this.documents.entries()) {
       docs.push({ name, outline });

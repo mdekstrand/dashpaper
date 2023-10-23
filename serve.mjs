@@ -1,10 +1,7 @@
 import * as esbuild from "esbuild";
 import brode from "@geut/esbuild-plugin-brode";
 
-esbuild.serve({
-  port: 1420,
-  servedir: ".",
-}, {
+let context = await esbuild.context({
   bundle: true,
   outdir: "dist",
   entryPoints: ["src/main.tsx"],
@@ -14,4 +11,9 @@ esbuild.serve({
   plugins: [
     brode(),
   ],
+});
+
+context.serve({
+  port: 1420,
+  servedir: ".",
 });

@@ -1,73 +1,101 @@
-import { h, Fragment } from 'preact';
+import { h, Fragment } from "preact";
 import { useState } from "preact/hooks";
 import { Item } from "birch-outline";
 import "./HomeScreen.css";
-import { TaskPaperRepository } from "./storage/repo";
+import { TaskPaperRepository, TaskFile } from "./storage/repo";
 import { TaskLine } from "./components/items";
 
-type HomeParams = {
-  repo: TaskPaperRepository
-}
+type DocListParams = {
+  docs: TaskFile[];
+};
 
-function DocList({docs}) {
+type HomeParams = {
+  repo: TaskPaperRepository;
+};
+
+function DocList({ docs }: DocListParams) {
   return (
     <ul class="doclist">
-      {docs ? docs.map((o) => <li>
-        <a href={"/files/" + o.name}>{o.name}</a>
-      </li>) : []}
+      {docs
+        ? docs.map((o) => (
+            <li>
+              <a href={"/files/" + o.name}>{o.name}</a>
+            </li>
+          ))
+        : []}
     </ul>
   );
 }
 
-function Upcoming({docs}) {
-  let seen = new Set();
+function Upcoming({ docs }: DocListParams) {
+  let seen = new Map();
   let overdue = [];
   let tomorrow = [];
   let week = [];
   let month = [];
 
   for (let doc of docs) {
-    for (let item of doc.outline.evaluateItemPath("not @done and @due < [d] today")) {
+    for (let item of doc.outline.evaluateItemPath(
+      "not @done and @due < [d] today"
+    )) {
+      item.setAttribute("src-file", doc.name);
       overdue.push(item);
-      seen.add(item.id);
+      seen.set(item.id, item);
     }
-    for (let item of doc.outline.evaluateItemPath("not @done and @due <= [d] tomorrow")) {
+    for (let item of doc.outline.evaluateItemPath(
+      "not @done and @due <= [d] tomorrow"
+    )) {
       if (seen.has(item.id)) continue;
+      item.setAttribute("src-file", doc.name);
       tomorrow.push(item);
-      seen.add(item.id);
+      seen.set(item.id, item);
     }
-    for (let item of doc.outline.evaluateItemPath("not @done and @due <= [d] 8 days")) {
+    for (let item of doc.outline.evaluateItemPath(
+      "not @done and @due <= [d] 8 days"
+    )) {
       if (seen.has(item.id)) continue;
+      item.setAttribute("src-file", doc.name);
       week.push(item);
-      seen.add(item.id);
+      seen.set(item.id, item);
     }
-    for (let item of doc.outline.evaluateItemPath("not @done and @due <= [d] 1 month")) {
+    for (let item of doc.outline.evaluateItemPath(
+      "not @done and @due <= [d] 1 month"
+    )) {
       if (seen.has(item.id)) continue;
+      item.setAttribute("src-file", doc.name);
       month.push(item);
-      seen.add(item.id);
+      seen.set(item.id, item);
     }
   }
 
   return (
     <div class="upcoming">
       <div class="overdue">
-      <h2>Overdue</h2>
-      {overdue.map((i) => <TaskLine item={i} children={false} />)}
+        <h2>Overdue</h2>
+        {overdue.map((i) => (
+          <TaskLine item={i} children={false} />
+        ))}
       </div>
       <div class="tomorrow">
-      <h2>Tomorrow</h2>
-      {tomorrow.map((i) => <TaskLine item={i} children={false} />)}
+        <h2>Tomorrow</h2>
+        {tomorrow.map((i) => (
+          <TaskLine item={i} children={false} />
+        ))}
       </div>
       <div class="week">
-      <h2>This Week</h2>
-      {week.map((i) => <TaskLine item={i} children={false} />)}
+        <h2>This Week</h2>
+        {week.map((i) => (
+          <TaskLine item={i} children={false} />
+        ))}
       </div>
       <div class="month">
-      <h2>This Month</h2>
-      {month.map((i) => <TaskLine item={i} children={false} />)}
+        <h2>This Month</h2>
+        {month.map((i) => (
+          <TaskLine item={i} children={false} />
+        ))}
       </div>
     </div>
-  )
+  );
 }
 
 function HomeScreen(params: HomeParams) {
