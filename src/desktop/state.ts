@@ -31,7 +31,7 @@ export class AppState {
         dir: BaseDirectory.AppData,
       });
     } catch (e) {
-      if (e.match(/[Nn]o such file or directory/)) {
+      if (typeof(e) == "string" && e.match(/[Nn]o such file or directory/)) {
         console.log("no state file found");
       } else {
         console.error("unknown error reading state file: %s", e);
